@@ -33,7 +33,7 @@ public class LogMapperImpl implements LogMapper {
                 .setCreatedAt(LocalDateTime.now().atZone(ZoneId.systemDefault()).toLocalDateTime())
                 .setOperationService((short) createLogRequest.getOperationService())
                 .setOperationType((short) createLogRequest.getOperationType())
-                .setUserId(createLogRequest.getUserId())
+                .setUsername(createLogRequest.getUsername())
                 .setCashierCode(createLogRequest.getCashierCode())
                 .setJsonData(JSONB.jsonbOrNull(createLogRequest.getJson()));
     }
@@ -48,7 +48,7 @@ public class LogMapperImpl implements LogMapper {
                 .setCreatedAt(TimeUtil.toEpochMilli(logRecord.getCreatedAt()))
                 .setOperationService(logRecord.getOperationService())
                 .setOperationType(logRecord.getOperationType())
-                .setUserId(logRecord.getUserId())
+                .setUsername(logRecord.getUsername())
                 .setCashierCode(logRecord.getCashierCode())
                 .setJson(logRecord.getJsonData().data())
                 .build();

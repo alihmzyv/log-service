@@ -1,9 +1,9 @@
 package com.alihmzyv.logservice.server;
 
 import com.alihmzyv.logservice.proto.CreateLogRequest;
-import com.alihmzyv.logservice.proto.LogResponse;
 import com.alihmzyv.logservice.proto.LogServiceGrpc;
 import com.alihmzyv.logservice.service.LogService;
+import com.google.protobuf.Empty;
 import io.grpc.stub.StreamObserver;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +17,9 @@ public class LogGrpcService extends LogServiceGrpc.LogServiceImplBase {
     LogService logService;
 
     @Override
-    public void createLog(CreateLogRequest request, StreamObserver<LogResponse> responseObserver) {
+    public void createLog(CreateLogRequest request, StreamObserver<Empty> responseObserver) {
         try {
-            LogResponse logResponse = logService.createLog(request);
-            responseObserver.onNext(logResponse);
+            logService.createLog(request);
         } finally {
             responseObserver.onCompleted();
         }
