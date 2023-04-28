@@ -20,6 +20,7 @@ public class LogGrpcService extends LogServiceGrpc.LogServiceImplBase {
     public void createLog(CreateLogRequest request, StreamObserver<Empty> responseObserver) {
         try {
             logService.createLog(request);
+            responseObserver.onNext(Empty.getDefaultInstance());
         } finally {
             responseObserver.onCompleted();
         }
