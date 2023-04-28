@@ -2,7 +2,6 @@ package com.alihmzyv.logservice.service.impl;
 
 import com.alihmzyv.logservice.mapper.LogMapper;
 import com.alihmzyv.logservice.proto.CreateLogRequest;
-import com.alihmzyv.logservice.proto.LogResponse;
 import com.alihmzyv.logservice.repo.LogRepo;
 import com.alihmzyv.logservice.service.LogService;
 import com.alihmzyv.logservice.tables.records.LogRecord;
@@ -19,9 +18,8 @@ public class LogServiceImpl implements LogService {
     LogMapper logMapper;
 
     @Override
-    public LogResponse createLog(CreateLogRequest createLogRequest) {
+    public void createLog(CreateLogRequest createLogRequest) {
         LogRecord logRecord = logMapper.toRecord(createLogRequest);
         logRepo.insertLog(logRecord);
-        return logMapper.toDto(logRecord);
     }
 }

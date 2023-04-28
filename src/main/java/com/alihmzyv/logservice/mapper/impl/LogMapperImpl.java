@@ -2,9 +2,7 @@ package com.alihmzyv.logservice.mapper.impl;
 
 import com.alihmzyv.logservice.mapper.LogMapper;
 import com.alihmzyv.logservice.proto.CreateLogRequest;
-import com.alihmzyv.logservice.proto.LogResponse;
 import com.alihmzyv.logservice.tables.records.LogRecord;
-import com.alihmzyv.logservice.util.TimeUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -29,28 +27,17 @@ public class LogMapperImpl implements LogMapper {
             return null;
         }
 
-        return dslContext.newRecord(LOG)
+        LogRecord logRecord = dslContext.newRecord(LOG)
                 .setCreatedAt(LocalDateTime.now().atZone(ZoneId.systemDefault()).toLocalDateTime())
                 .setOperationService((short) createLogRequest.getOperationService())
                 .setOperationType((short) createLogRequest.getOperationType())
                 .setUsername(createLogRequest.getUsername())
-                .setCashierCode(createLogRequest.getCashierCode())
                 .setJsonData(JSONB.jsonbOrNull(createLogRequest.getJson()));
-    }
 
-    @Override
-    public LogResponse toDto(LogRecord logRecord) {
-        if (logRecord == null) {
-            return null;
+        if (createLogRequest.hasCashierCode()) { //cashier code is optional
+            logRecord.setCashierCode(createLogRequest.getCashierCode());
         }
 
-        return LogResponse.newBuilder()
-                .setCreatedAt(TimeUtil.toEpochMilli(logRecord.getCreatedAt()))
-                .setOperationService(logRecord.getOperationService())
-                .setOperationType(logRecord.getOperationType())
-                .setUsername(logRecord.getUsername())
-                .setCashierCode(logRecord.getCashierCode())
-                .setJson(logRecord.getJsonData().data())
-                .build();
+        return logRecord;
     }
 }
